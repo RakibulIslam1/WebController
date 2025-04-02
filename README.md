@@ -70,10 +70,10 @@ To upload website files stored in the **data** folder to ESP32’s SPIFFS, follo
 - Open your project in **Arduino IDE**.
 - Click **"ESP32 Sketch Data Upload"** in the Tools menu.
 - Wait for the upload to complete.
-You will see the uploader tool like this :-
- ![Tools](https://i.imgur.com/f3jr4NZ.png)
-The debug message should be like this :-
-![message](https://i.imgur.com/4FxtePx.png)
+- You will see the uploader tool like this :-
+ ![Tools](https://i.imgur.com/f3jr4NZ.png).
+- The debug message should be like this :-
+![message](https://i.imgur.com/4FxtePx.png).
 
 ✅ Now, your website files in the **data** folder are stored in ESP32’s SPIFFS! 🚀
 
