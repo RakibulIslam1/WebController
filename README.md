@@ -1,6 +1,7 @@
-# My Library for ESP32 Web Server based controller
+# Library for ESP32 Web Server based controller
 
-This is a library for controlling an ESP32-based web server that anyone can use for their project. It supports 10 buttons, 2 sliders, and 2 joysticks. It provides a customizable controller interface, allowing you to configure buttons, sliders, and joysticks, and save settings both in local storage and EEPROM. It supports multi-touch input, allowing multiple joysticks to work simultaneously.
+This is a library for an ESP32 web server based controller that anyone can use for their project. It supports 10 buttons, 2 sliders, and 2 joysticks. It provides a customizable controller interface, allowing you to configure buttons, sliders, and joysticks, and save settings both in local storage and EEPROM. It supports multi-touch input, allowing multiple joysticks to work simultaneously.
+
 ![cntroller face](https://i.imgur.com/K4Y7zn1.jpeg)
 
 
@@ -31,8 +32,6 @@ This is a library for controlling an ESP32-based web server that anyone can use 
 - Enhances **usability and immersive experience** for touchscreen devices.  
 
 
-
-
 ## 📂 Project File Structure  
 
 Your Arduino project should be structured as follows:  /YourProjectName │── /data │ ├── controller.html │ ├── settings.html │── YourProjectName.ino │── OtherRequiredFiles.ino
@@ -43,6 +42,7 @@ Ensure that the `data` folder contains `controller.html` and `settings.html` bef
 ### 📸 Screenshot  
 Here is a visual representation of the project structure:  
 ![file structure](https://i.imgur.com/AL3KFws.gif)
+
 
 ## 📂 SPIFFS Data Upload Setup(For storing the html file in esp32)
 
@@ -59,7 +59,7 @@ To upload website files stored in the **data** folder to ESP32’s SPIFFS, follo
   ```
   Documents/Arduino/tools/ESP32FS/tool/esp32fs.jar
   ```
-  The file structure should be like this-
+- The file structure should be like this-
   ![file structure](https://i.imgur.com/fV7ENEP.png)
 
 ### 3️⃣ Restart Arduino IDE  
@@ -71,19 +71,36 @@ To upload website files stored in the **data** folder to ESP32’s SPIFFS, follo
 - Click **"ESP32 Sketch Data Upload"** in the Tools menu.
 - Wait for the upload to complete.
 - You will see the uploader tool like this :-
- ![Tools](https://i.imgur.com/f3jr4NZ.png).
+ ![Tools](https://i.imgur.com/f3jr4NZ.png)
 - The debug message should be like this :-
-![message](https://i.imgur.com/4FxtePx.png).
+![message](https://i.imgur.com/4FxtePx.png)
 
 ✅ Now, your website files in the **data** folder are stored in ESP32’s SPIFFS! 🚀
 
 
 
-## Settings Management
+## ⚙️ Settings Management  
 
-- **Local Storage**: Settings are first saved to the user's local storage on the device (e.g., browser). This allows the settings to persist across page reloads.
-- **EEPROM**: Additionally, settings are saved to the EEPROM on the ESP32. This ensures that even after a power cycle, the settings remain intact, allowing for easy use across different devices.
-- **First-Time Setup**: The first time the ESP32 is connected, settings are loaded from the EEPROM if available, or default settings are used. If settings are changed, they are saved back to both local storage and EEPROM to persist across devices.
+### 🔹 Local Storage  
+- Settings are first saved in the **browser’s local storage**.  
+- This ensures settings remain intact even after refreshing the page.  
+
+### 🔹 EEPROM (ESP32 Memory)  
+- All settings are stored in the **ESP32's EEPROM**, preserving them even after a power cycle.  
+- This allows you to use the controller on multiple devices without reconfiguring.  
+
+### 🔹 First-Time Setup  
+- When the ESP32 is connected for the first time:  
+  - It attempts to load settings from EEPROM.  
+  - If no saved settings are found, default values are used.  
+  - Any changes made are saved both in **local storage** and **EEPROM** for persistence.  
+
+## 📸 Settings Interface Preview  
+
+| Slider Configuration | Button Configuration | Theme Settings |
+|----------------------|----------------------|----------------|
+| ![Slider settings](https://i.imgur.com/n12yPsc.jpeg) | ![Button Settings](https://i.imgur.com/S7hRldQ.jpeg) | ![Theme Settings](https://i.imgur.com/nFLCo8y.jpeg) |
+
 
 ## License
 This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)**. See the [LICENSE](LICENSE) file for details.
