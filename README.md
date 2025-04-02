@@ -48,7 +48,7 @@ Ensure that the `data` folder contains `controller.html` and `settings.html` bef
 - **settings.html**: The settings interface where users can customize the button names, types, slider ranges, joystick ranges, and other parameters.
 ### 📸 Screenshot  
 Here is a visual representation of the project structure:  
-![file structure](https://imgur.com/a/mFbpcEo)
+![file structure](https://i.imgur.com/AL3KFws.gif)
 
 
 
