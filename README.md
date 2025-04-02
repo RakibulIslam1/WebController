@@ -1,6 +1,8 @@
 # My Library for ESP32 Web Server based controller
 
 This is a library for controlling an ESP32-based web server that anyone can use for their project. It supports 10 buttons, 2 sliders, and 2 joysticks. It provides a customizable controller interface, allowing you to configure buttons, sliders, and joysticks, and save settings both in local storage and EEPROM. It supports multi-touch input, allowing multiple joysticks to work simultaneously.
+![cntroller face](https://i.imgur.com/r7xfh4T.png)
+
 
 ## 🚀 Features  
 
@@ -21,6 +23,12 @@ This is a library for controlling an ESP32-based web server that anyone can use 
 
 ### 📱 Device-Independent Configuration  
 - Once saved in **EEPROM**, settings remain intact across all devices using the controller—**no need to reconfigure for each device!**  
+
+
+### 🖥️ Full-Screen Mode for App-Like Experience  
+- A **Full-Screen Button** is available at the **top left** of the interface.  
+- When activated, the controller enters **full-screen mode**, making it feel like a native app.  
+- Enhances **usability and immersive experience** for touchscreen devices.  
 
 
 ## License
