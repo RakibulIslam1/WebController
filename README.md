@@ -1,13 +1,27 @@
 # My Library for ESP32 Web Server based controller
 
-This is a library for controlling an ESP32-based web server with support for reading/writing to the file system and handling JSON data. It provides a customizable controller interface, allowing you to configure buttons, sliders, and joysticks, and save settings both in local storage and EEPROM. It supports multi-touch input, allowing multiple joysticks to work simultaneously.
+This is a library for controlling an ESP32-based web server that anyone can use for their project. It supports 10 buttons, 2 sliders, and 2 joysticks. It provides a customizable controller interface, allowing you to configure buttons, sliders, and joysticks, and save settings both in local storage and EEPROM. It supports multi-touch input, allowing multiple joysticks to work simultaneously.
 
-## Features
-- **Button Types**: You can select between different button types, including **Push Buttons** and **Toggle Switches**. The user can change the button name and type directly from the settings interface.
-- **Slider Configuration**: Sliders can be named and their range can be customized, offering flexibility for controlling various parameters.
-- **Joystick Configuration**: Joysticks' ranges can be adjusted to suit different applications. The controller supports multi-touch, allowing multiple joysticks to work at the same time.
-- **Settings Management**: All user settings (button names, types, slider ranges, joystick ranges) can be modified in the settings interface. These settings are saved in both **local storage** and the **EEPROM** of the ESP32, ensuring that the settings persist even after a device reset.
-- **Device Independence**: Once settings are saved to EEPROM, they are available on any device using the project. This allows for easy configuration across multiple devices.
+## 🚀 Features  
+
+### 🎛️ Customizable Buttons  
+- Supports **Push Buttons** and **Toggle Switches**.  
+- Easily modify **button names and types** from the settings interface.  
+
+### 🎚️ Flexible Sliders  
+- Customize **slider names and ranges** to match your project requirements.  
+
+### 🎮 Advanced Joystick Support  
+- Adjust **joystick range settings** for better precision.  
+- Supports **multi-touch**, enabling both joysticks to work simultaneously.  
+
+### ⚙️ Smart Settings Management  
+- Modify **button names, types, slider ranges, and joystick ranges** through an intuitive settings menu.  
+- Settings are stored in **local storage** and **ESP32’s EEPROM**, ensuring persistence even after resets.  
+
+### 📱 Device-Independent Configuration  
+- Once saved in **EEPROM**, settings remain intact across all devices using the controller—**no need to reconfigure for each device!**  
+
 
 ## License
 This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)**. See the [LICENSE](LICENSE) file for details.
@@ -25,14 +39,18 @@ This library requires the following libraries to work correctly:
 - [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - For handling JSON data.
 - [EEPROM](https://github.com/esp8266/Arduino/tree/master/libraries/EEPROM) - For reading and writing to the EEPROM on ESP32.
 
-## Project Structure
+## 📂 Project File Structure  
 
-The library requires the following file structure for proper operation:
+Your Arduino project should be structured as follows:  /YourProjectName │── /data │ ├── controller.html │ ├── settings.html │── YourProjectName.ino │── OtherRequiredFiles.ino
 
+Ensure that the `data` folder contains `controller.html` and `settings.html` before uploading files to SPIFFS.
 - **controller.html**: The main interface for controlling the ESP32 via the web server. It contains buttons, sliders, and joysticks.
 - **settings.html**: The settings interface where users can customize the button names, types, slider ranges, joystick ranges, and other parameters.
+### 📸 Screenshot  
+Here is a visual representation of the project structure:  
+![file structure](https://imgur.com/a/mFbpcEo)
 
-These files should be placed in the `/data` folder of your Arduino project. When the project is uploaded to the ESP32, these HTML files will be served from the ESP32's file system.
+
 
 ## Settings Management
 
