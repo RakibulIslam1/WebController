@@ -102,9 +102,7 @@ To upload website files stored in the **data** folder to ESP32’s SPIFFS, follo
 | ![Slider settings](https://i.imgur.com/n12yPsc.jpeg) | ![Button Settings](https://i.imgur.com/S7hRldQ.jpeg) | ![Theme Settings](https://i.imgur.com/nFLCo8y.jpeg) |
 
 
-## License
-This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)**. See the [LICENSE](LICENSE) file for details.
-![CC BY-NC 4.0](https://licensebuttons.net/l/by-nc/4.0/88x31.png)
+
 
 ## Dependencies
 
@@ -117,37 +115,57 @@ This library requires the following libraries to work correctly:
 - [SPIFFS](https://github.com/esp8266/Arduino/tree/master/libraries/SPIFFS) - For managing files in SPIFFS (Serial Peripheral Interface Flash File System).
 - [ArduinoJson](https://github.com/bblanchon/ArduinoJson) - For handling JSON data.
 - [EEPROM](https://github.com/esp8266/Arduino/tree/master/libraries/EEPROM) - For reading and writing to the EEPROM on ESP32.
-## Installation Instructions
+## 📥 Installation Instructions
 
-To use this library, you will need to install the following dependencies. You can do so via the **Arduino IDE** or **PlatformIO**.
+### Installing the Main Library:
 
-### Using the Arduino IDE:
+To use the main library in your project, follow these steps:
+
+1. Download the library from the [GitHub repository](https://github.com/your-repo-url).
+2. Go to **Sketch > Include Library > Add .ZIP Library** in the Arduino IDE.
+3. Select the downloaded `.zip` file and click **Open** to add the library to your project.
+
+
+
+
+### To use this library, you will need to install the following dependencies. 
 
 1. Open **Arduino IDE**.
 2. Go to **Sketch > Include Library > Manage Libraries**.
 3. In the **Library Manager**, search for each of the following libraries and click **Install**:
-   - WiFi
-   - ESPAsyncWebServer
-   - AsyncTCP
-   - FS
-   - SPIFFS
-   - ArduinoJson
-   - EEPROM
+   - **WiFi**: For connecting the ESP32 to a Wi-Fi network.
+   - **ESPAsyncWebServer**: For handling web server functionalities asynchronously.
+   - **AsyncTCP**: A required library for `ESPAsyncWebServer` to function correctly.
+   - **FS**: Filesystem support for the ESP32.
+   - **SPIFFS**: SPI Flash File System for the ESP32 to store and serve files.
+   - **ArduinoJson**: For working with JSON data, useful in web applications.
+   - **EEPROM**: For reading and writing data to the EEPROM on the ESP32.
 
-### Using PlatformIO:
 
-If you're using **PlatformIO**, add the following dependencies in your `platformio.ini` file:
+Once you have completed these steps, you are ready to start using the library in your ESP32 project!
 
-```ini
-[env:esp32]
-platform = espressif32
-framework = arduino
-lib_deps =
-  WiFi
-  ESPAsyncWebServer
-  AsyncTCP
-  FS
-  SPIFFS
-  ArduinoJson
-  EEPROM
+### 📦 EEPROM Usage Restriction
 
+If you plan to use **EEPROM** in your project, please note the following restrictions:
+
+- The **EEPROM** address range **0 to 110** is reserved for the library’s internal use.
+- You **must not** use this range for your own data.
+- The remaining **EEPROM** addresses (from **111 onward**) are available for you to use freely.
+
+Ensure that you avoid using addresses **0 to 110** in your EEPROM operations to prevent conflicts with the library’s settings and functionality.
+
+## 🛡️ License  
+
+This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)**.  
+
+You are free to:  
+✔️ Share — Copy and redistribute the material in any medium or format.  
+✔️ Adapt — Remix, transform, and build upon the material.  
+
+**Under the following terms:**  
+⚠️ **Attribution** — You must give appropriate credit and indicate if changes were made.  
+🚫 **NonCommercial** — You may not use the material for **commercial purposes**.  
+
+For full license details, see the [LICENSE](LICENSE) file.  
+
+![CC BY-NC 4.0](https://licensebuttons.net/l/by-nc/4.0/88x31.png)  
