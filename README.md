@@ -70,9 +70,9 @@ To upload website files stored in the **data** folder to ESP32’s SPIFFS, follo
 - Open your project in **Arduino IDE**.
 - Click **"ESP32 Sketch Data Upload"** in the Tools menu.
 - Wait for the upload to complete.
-- You will see the uploader tool like this :-
+### You will see the uploader tool like this :-
  ![Tools](https://i.imgur.com/f3jr4NZ.png)
-- The debug message should be like this :-
+### The debug message should be like this :-
 ![message](https://i.imgur.com/4FxtePx.png)
 
 ✅ Now, your website files in the **data** folder are stored in ESP32’s SPIFFS! 🚀
@@ -144,7 +144,7 @@ To use the main library in your project, follow these steps:
 
 Once you have completed these steps, you are ready to start using the library in your ESP32 project!
 
-### 📦 EEPROM Usage Restriction
+## 📦 EEPROM Usage Restriction
 
 If you plan to use **EEPROM** in your project, please note the following restrictions:
 
