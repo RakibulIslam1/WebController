@@ -154,6 +154,39 @@ If you plan to use **EEPROM** in your project, please note the following restric
 
 Ensure that you avoid using addresses **0 to 110** in your EEPROM operations to prevent conflicts with the library’s settings and functionality.
 
+## 💡 Example: WebController LED Control
+
+This example demonstrates controlling an LED on pin 2 of the ESP32 using a button from this WebSocket-based controller.
+
+### How to Access the Example:
+
+1. Open **Arduino IDE**.
+2. Go to **File > Examples > WebController > led_control**.
+3. Upload the code to your ESP32.
+
+### How It Works:
+
+- The ESP32 connects to WiFi and listens for button presses from the web interface.
+- The LED on **pin 2** is controlled as follows:
+  - If the button is configured as a **push button** in the settings, it will turn **ON** when pressed and **OFF** when released.
+  - If the button is configured as a **toggle button**, pressing it will **toggle** the LED state (ON/OFF), keeping the state until the button is pressed again.
+    
+### How to Get the IP Address:
+
+1. Open **Serial Monitor** in the **Arduino IDE** (Tools > Serial Monitor).
+2. Make sure **Autoscroll** is turned off.
+3. Press the **EN (Enable)** button on the ESP32 to reset it.
+4. Once the ESP32 connects to WiFi, the **IP address** will be displayed on the Serial Monitor.
+5. Copy the displayed IP address.
+6. Open your browser and paste the IP address into the URL bar to access the WebController interface.
+
+### Video Demonstration:
+
+Below is a Video showing how the button controls the LED:
+
+![LED Control Demo](https://i.imgur.com/KOoxMIB.gif)
+
+
 ## 🛡️ License  
 
 This project is licensed under the **Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0)**.  
