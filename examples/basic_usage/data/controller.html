@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ESP32 WebSocket Controller</title>
+  <style>
+    body {
+      width: 100vw;
+      height: 100vh;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-evenly;
+      overflow: hidden;
+      font-family: Arial, sans-serif;
+      background-color: var(--primary-color);
+      transition: background-color 0.3s ease;
+      text-align: center;
+      background-image: radial-gradient(#615a5a 1px, transparent 1px);
+      background-size: 20px 20px;
+    }
+
+    :root {
+      --primary-color: #ffffff;
+      --button-color: #4CAF50;
+    }
+
+    .button-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3vw;
+      margin-bottom: 3vh;
+    }
+
+    .btn {
+      font-size: 2.5vh;
+      padding: 2vh 5vw;
+      cursor: pointer;
+      border-radius: 2vh;
+      border: none;
+      background-color: var(--button-color);
+      color: white;
+      min-width: 15vw;
+      min-height: 6vh;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3), 0 6px 12px rgba(0, 0, 0, 0.2);
+      transition: box-shadow 0.3s ease;
+    }
+
+    /* .btn:hover {
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.2);
+    } */
+
+    .btn.off {
+      background-color: #f44336;
+    }
+
+    .joystick-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 40vw;
+      margin-top: 5vh;
+    }
+
+    .joystick-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .joystick {
+      width: 25vmin;
+      height: 25vmin;
+      min-width: 150px;
+      min-height: 150px;
+      max-width: 200px;
+      max-height: 200px;
+      background-color: #ddd;
+      border-radius: 50%;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 2px solid #615a5a;
+      border-radius: 50%;
+      box-shadow: 0 15px 25px rgba(0, 0, 0, 0.3);
+      transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+    }
+
+    .stick {
+      width: 10vmin;
+      height: 10vmin;
+      max-width: 50px;
+      max-height: 50px;
+      background: radial-gradient(circle at center, #ffffff 5%, var(--button-color) 60%, #222 100%);
+      border-radius: 50%;
+      position: absolute;
+      box-shadow:
+        inset 3px 3px 5px rgba(255, 255, 255, 0.3),
+        inset -3px -3px 5px rgba(0, 0, 0, 0.6),
+        0 5px 10px rgba(0, 0, 0, 0.5);
+      transition: transform 0.1s ease-out, box-shadow 0.1s ease-out;
+    }
+
+    .stick.active {
+      transform: scale(1.1);
+      box-shadow:
+        inset 3px 3px 5px rgba(255, 255, 255, 0.4),
+        inset -3px -3px 5px rgba(0, 0, 0, 0.7),
+        0 7px 15px rgba(0, 0, 0, 0.6);
+    }
+
+    .joystick.active {
+      transform: scale(1.05);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+    }
+
+
+    .info-container {
+      margin-top: 2vh;
+      font-size: 2vh;
+    }
+
+    .settings-button {
+      position: fixed;
+      top: 2vh;
+      right: 2vw;
+      padding: 1.5vh;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 1vh;
+      font-size: 1.8vh;
+      z-index: 100;
+    }
+
+    .slider-box {
+      width: 80vw;
+      padding: 2vh;
+      background-color: #f0f0f0;
+      border: 2px solid #615a5a;
+      border-radius: 10px;
+      text-align: center;
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+      margin: auto;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .slider-container {
+      margin: 2vh;
+      display: flex;
+      justify-content: center;
+      gap: 3vw;
+      flex-wrap: wrap;
+    }
+
+    .slider-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .slider {
+      width: 30vw;
+      height: 1vh;
+      appearance: none;
+      background: var(--button-color);
+      border-radius: 5px;
+      outline: none;
+      transition: background 0.3s;
+    }
+
+    .slider::-webkit-slider-thumb {
+      appearance: none;
+      width: 20px;
+      height: 20px;
+      background: #ffffff;
+      border: 2px solid #007bff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .slider::-moz-range-thumb {
+      width: 20px;
+      height: 20px;
+      background: #ffffff;
+      border: 2px solid #007bff;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+
+    .fullscreen-button {
+      position: fixed;
+      top: 2vh;
+      left: 2vw;
+      padding: 1.5vh;
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+      border: none;
+      border-radius: 1vh;
+      font-size: 1.8vh;
+    }
+
+    .pressed {
+      transform: scale(0.98);
+      transition: all 0.1s ease;
+    }
+
+
+    h1,
+    h2,
+    h3,
+    p {
+      font-size: 2.5vh;
+    }
+
+    @media (max-width: 600px) {
+      .joystick-container {
+        flex-direction: column;
+        gap: 5vh;
+      }
+
+      .button-container {
+        flex-direction: column;
+        gap: 3vh;
+      }
+
+      .joystick {
+        width: 40vmin;
+        height: 40vmin;
+      }
+
+      .stick {
+        width: 15vmin;
+        height: 15vmin;
+      }
+
+      .btn {
+        font-size: 2vh;
+        padding: 1.5vh 4vw;
+        min-width: 12vw;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <h2>ESP32 WebSocket Controller</h2>
+  <a class="settings-button" href="setting.html">⚙ Settings</a>
+  <button class="fullscreen-button" onclick="toggleFullScreen()">🖥 Full Screen</button>
+  <div class="slider-box">
+    <div class="slider-container">
+      <div class="slider-group">
+        <label for="slider1" id="slider1Label">Slider 1:</label>
+        <input type="range" id="slider1" class="slider" min="0" max="100" value="50" onchange="updateSliderValue(1)">
+        <span id="slider1Value">50</span>
+      </div>
+      <div class="slider-group">
+        <label for="slider2" id="slider2Label">Slider 2:</label>
+        <input type="range" id="slider2" class="slider" min="0" max="100" value="50" onchange="updateSliderValue(2)">
+        <span id="slider2Value">50</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="btngap">
+    <div class="button-container">
+      <button class="btn" id="button1" onclick="handleButtonClick('button1')">Button 1</button>
+      <button class="btn" id="button2" onclick="handleButtonClick('button2')">Button 2</button>
+      <button class="btn" id="button3" onclick="handleButtonClick('button3')">Button 3</button>
+      <button class="btn" id="button4" onclick="handleButtonClick('button4')">Button 4</button>
+      <button class="btn" id="button5" onclick="handleButtonClick('button5')">Button 5</button>
+    </div>
+    <div class="button-container">
+      <button class="btn" id="button6" onclick="handleButtonClick('button6')">Button 6</button>
+      <button class="btn" id="button7" onclick="handleButtonClick('button7')">Button 7</button>
+      <button class="btn" id="button8" onclick="handleButtonClick('button8')">Button 8</button>
+      <button class="btn" id="button9" onclick="handleButtonClick('button9')">Button 9</button>
+      <button class="btn" id="button10" onclick="handleButtonClick('button10')">Button 10</button>
+    </div>
+  </div>
+
+  <div class="joystick-container">
+    <div class="joystick-wrapper">
+      <div class="joystick" id="joystick1">
+        <div class="stick" id="stick1"></div>
+      </div>
+      <p id="joystick1Pos">X: 0, Y: 0</p>
+    </div>
+    <div class="joystick-wrapper">
+      <div class="joystick" id="joystick2">
+        <div class="stick" id="stick2"></div>
+      </div>
+      <p id="joystick2Pos">X: 0, Y: 0</p>
+    </div>
+  </div>
+
+  <script>
+    let ws;
+    let receivedData = {};
+    let joystickRange1 = 100;
+    let joystickRange2 = 100;
+    let slider1Range = 100;
+    let slider2Range = 100;
+    let slider1Name = "Slider 1";
+    let slider2Name = "Slider 2";
+    let buttonTypeMap = {};
+
+
+    document.addEventListener("DOMContentLoaded", () => {
+      applyTheme();
+      connectWebSocket();
+
+      ws.onopen = () => {
+        loadSettings();
+        updateSliderValue(1);
+        updateSliderValue(2);
+
+        setTimeout(() => {
+          const buttons = document.querySelectorAll(".btn");
+          buttons.forEach((button) => {
+            const buttonId = button.id.replace("button", "");
+            if (buttonTypeMap[buttonId] === "push") {
+              button.style.backgroundColor = "#f44336";
+            }
+          });
+        }, 500);
+      };
+    });
+
+
+
+    function applyTheme() {
+      const savedColor = localStorage.getItem("primaryColor");
+      const savedButtonColor = localStorage.getItem("buttoncolor");
+      const darkMode = localStorage.getItem("darkMode") === "enabled";
+      console.log(savedColor);
+      console.log(savedButtonColor);
+      if (savedColor) {
+        document.documentElement.style.setProperty("--primary-color", savedColor);
+      }
+
+      if (savedButtonColor) {
+        document.documentElement.style.setProperty("--button-color", savedButtonColor);
+      }
+
+      if (darkMode) {
+        document.body.classList.add("dark-mode");
+      } else {
+        document.body.classList.remove("dark-mode");
+      }
+    }
+
+    function connectWebSocket() {
+      ws = new WebSocket("ws://" + window.location.hostname + "/ws");
+      ws.onopen = () => {
+        console.log("WebSocket Connected");
+      };
+      ws.onclose = () => console.log("WebSocket Disconnected");
+      ws.onerror = (error) => console.log("WebSocket Error:", error);
+      ws.onmessage = function (event) {
+        try {
+          const message = JSON.parse(event.data);
+          console.log("Received message:", message);
+
+          if (message.type === "settings_data") {
+            console.log("Received settings from ESP32:", message.data);
+            receivedData = message.data;
+            localStorage.setItem("controllerSettings", JSON.stringify(message.data));
+            applySettings();
+          } else if (message.type === "request_settings_response") {
+            console.log("Received response to request_settings");
+            applySettings();
+          } else {
+            console.log("Unknown message type:", message.type);
+          }
+        } catch (error) {
+          console.error("Error parsing WebSocket message:", error);
+        }
+      };
+    }
+
+    function loadSettings() {
+      if (ws && ws.readyState === WebSocket.OPEN) {
+        ws.send(JSON.stringify({ type: "request_settings" }));
+        console.log("Requested settings from ESP32");
+      } else {
+        console.log("WebSocket not connected. Loading from localStorage as fallback.");
+        const settings = JSON.parse(localStorage.getItem("controllerSettings")) || {};
+        applySettings();
+      }
+      console.log("loadSettings called. WebSocket readyState:", ws.readyState);
+    }
+
+
+    function applySettings() {
+      updateSliderName(1);
+      updateSliderName(2);
+      updateSliderRange(1);
+      updateSliderRange(2);
+      updateJoystickRange(1);
+      updateJoystickRange(2);
+      for (let i = 1; i <= 10; i++) {
+        updateButtonType(i);
+      }
+      for (let i = 1; i <= 10; i++) {
+        updateButtonName(i);
+      }
+      console.log(buttonTypeMap);
+    }
+
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen();
+      } else if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+
+    function handleButtonClick(buttonId) {
+      const numericId = parseInt(buttonId.replace("button", ""), 10);
+      const type = buttonTypeMap[numericId];
+      // console.log(`Button ID: ${buttonId}, Parsed ID: ${numericId}, Type: ${type}`);
+      if (type === "toggle") {
+        toggleButton(buttonId);
+      } else if (type === "push") {
+        pushButton(buttonId);
+      } else {
+        console.warn(`Unknown type for buttonId "${buttonId}"`);
+      }
+    }
+
+    function pushButton(buttonId) {
+      const button = document.getElementById(buttonId);
+      const buttonColor = getComputedStyle(document.documentElement).getPropertyValue('--button-color').trim();
+
+      button.style.backgroundColor = "#f44336";
+
+      let isPressed = false;
+
+      const sendMessage = (state) => {
+        const message = JSON.stringify({ type: "button", buttonId, state });
+        console.log("Sending push button message:", message);
+        if (ws && ws.readyState === WebSocket.OPEN) {
+          ws.send(message);
+        }
+      };
+
+      const press = (e) => {
+        e.preventDefault();
+        if (isPressed) return;
+        isPressed = true;
+        sendMessage("ON");
+
+        button.style.backgroundColor = buttonColor;
+        console.log("Button pressed, color changed to:", buttonColor);
+      };
+
+      const release = (e) => {
+        e.preventDefault();
+        if (!isPressed) return;
+        isPressed = false;
+        sendMessage("OFF");
+
+        button.style.backgroundColor = "#f44336";
+        console.log("Button released, color changed to red");
+      };
+
+      button.addEventListener("mousedown", press);
+      button.addEventListener("mouseup", release);
+      button.addEventListener("mouseleave", release);
+
+      button.addEventListener("touchstart", press, { passive: false });
+      button.addEventListener("touchend", release, { passive: false });
+      button.addEventListener("touchcancel", release, { passive: false });
+    }
+
+
+
+    function toggleButton(buttonId) {
+      let button = document.getElementById(buttonId);
+      let isActive = button.classList.toggle("off");
+      let state = isActive ? "OFF" : "ON";
+      let buttonName = button.innerText;
+      const rootStyles = getComputedStyle(document.documentElement);
+      const buttonColor = rootStyles.getPropertyValue('--button-color').trim();
+      button.style.backgroundColor = isActive ? "#f44336" : buttonColor;
+
+      let message = JSON.stringify({ type: "button", buttonId, state });
+      console.log("Sending toggle button message:", message);
+      ws.send(message);
+    }
+
+    function setupJoystick(joystickId, range) {
+      const joystick = document.getElementById(joystickId);
+      const stick = joystick.querySelector(".stick");
+      const centerX = joystick.clientWidth / 2;
+      const centerY = joystick.clientHeight / 2;
+      const maxRange = centerX - stick.clientWidth / 2;
+
+      let lastSent = 0;
+      const sendInterval = 50;
+      let activeTouches = {};
+      let isMouseEvent = false;
+
+      function sendJoystickData(x, y) {
+        const now = Date.now();
+        if (now - lastSent > sendInterval) {
+          lastSent = now;
+          ws.send(JSON.stringify({ type: "joystick", joystickId, x, y }));
+          document.getElementById(joystickId + "Pos").innerText = `X: ${x}, Y: ${y}`;
+        }
+      }
+
+      function moveStick(event, touchId = null) {
+        let touch;
+        if (event.touches) {
+          touch = [...event.touches].find(t => t.identifier === touchId);
+        } else {
+          touch = event;
+        }
+
+        if (!touch) return;
+        const rect = joystick.getBoundingClientRect();
+        let x = Math.round(((touch.clientX - rect.left - centerX) / maxRange) * range);
+        let y = Math.round(((rect.top + centerY - touch.clientY) / maxRange) * range);
+
+        x = Math.max(-range, Math.min(range, x));
+        y = Math.max(-range, Math.min(range, y));
+
+        stick.style.transform = `translate(${(x / range) * maxRange}px, ${(-y / range) * maxRange}px)`;
+        sendJoystickData(x, y);
+      }
+
+      function resetStick() {
+        let resetX = 0, resetY = 0;
+        let startX = parseFloat(stick.style.transform.split("(")[1]?.split("px")[0]) || 0;
+        let startY = parseFloat(stick.style.transform.split(",")[1]?.split("px")[0]) || 0;
+
+        let startTime;
+        function animateReset(time) {
+          if (!startTime) startTime = time;
+          let progress = (time - startTime) / 100;
+
+          let newX = startX + (resetX - startX) * progress;
+          let newY = startY + (resetY - startY) * progress;
+
+          if (progress < 1) {
+            stick.style.transform = `translate(${newX}px, ${newY}px)`;
+            requestAnimationFrame(animateReset);
+          } else {
+            stick.style.transform = "translate(0, 0)";
+            sendJoystickData(0, 0);
+          }
+        }
+
+        requestAnimationFrame(animateReset);
+      }
+
+
+      joystick.addEventListener("touchstart", (event) => {
+        for (let touch of event.changedTouches) {
+          activeTouches[touch.identifier] = touch.identifier;
+        }
+      });
+
+      joystick.addEventListener("touchmove", (event) => {
+        for (let touch of event.touches) {
+          if (activeTouches[touch.identifier] !== undefined) {
+            moveStick(event, touch.identifier);
+          }
+        }
+      });
+
+      joystick.addEventListener("touchend", (event) => {
+        Object.keys(activeTouches).forEach(id => delete activeTouches[id]);
+        resetStick();
+      });
+
+      joystick.addEventListener("touchcancel", (event) => {
+        Object.keys(activeTouches).forEach(id => delete activeTouches[id]);
+        resetStick();
+      });
+
+      joystick.addEventListener("mousedown", (event) => {
+        if (isMouseEvent) return;
+        isMouseEvent = true;
+        moveStick(event);
+      });
+
+      document.addEventListener("mousemove", (event) => {
+        if (isMouseEvent) {
+          moveStick(event);
+        }
+      });
+
+      document.addEventListener("mouseup", () => {
+        if (isMouseEvent) {
+          isMouseEvent = false;
+
+          resetStick();
+
+        }
+      });
+    }
+
+
+
+    function updateJoystickRange(joystickId) {
+      if (joystickId === 1) {
+        joystickRange1 = parseInt(receivedData.joystickRange1);
+        setupJoystick("joystick1", joystickRange1);
+      } else if (joystickId === 2) {
+        joystickRange2 = parseInt(receivedData.joystickRange2);
+        setupJoystick("joystick2", joystickRange2);
+      }
+    }
+
+    function updateSliderName(sliderId) {
+      if (sliderId === 1) {
+        document.getElementById("slider1Label").innerText = receivedData.slider1Name;
+      } else if (sliderId === 2) {
+        document.getElementById("slider2Label").innerText = receivedData.slider2Name;
+      }
+    }
+
+    function updateSliderRange(sliderId) {
+      if (sliderId === 1) {
+        document.getElementById("slider1").max = parseInt(receivedData.slider1Range);
+      } else if (sliderId === 2) {
+        document.getElementById("slider2").max = parseInt(receivedData.slider2Range);
+      }
+    }
+
+    function updateButtonName(buttonId) {
+      document.getElementById(`button${buttonId}`).innerText = receivedData[`button${buttonId}Name`];
+    }
+
+    function updateSliderValue(sliderId) {
+      let sliderValue = document.getElementById(`slider${sliderId}`).value;
+      document.getElementById(`slider${sliderId}Value`).innerText = sliderValue;
+      ws.send(JSON.stringify({ type: "slider", sliderId, value: sliderValue }));
+    }
+    function updateButtonType(buttonId) {
+      buttonTypeMap[buttonId] = (parseInt(receivedData[`button${buttonId}Type`]) === 1) ? "push" : "toggle";
+    }
+    document.querySelectorAll('.joystick').forEach(joystick => {
+      const stick = joystick.querySelector('.stick');
+
+      const activate = () => {
+        joystick.classList.add('active');
+        stick.classList.add('active');
+      };
+
+      const deactivate = () => {
+        joystick.classList.remove('active');
+        stick.classList.remove('active');
+      };
+
+      joystick.addEventListener('mousedown', activate);
+      joystick.addEventListener('mouseup', deactivate);
+      joystick.addEventListener('mouseleave', deactivate);
+
+      joystick.addEventListener('touchstart', activate, { passive: true });
+      joystick.addEventListener('touchend', deactivate);
+      joystick.addEventListener('touchcancel', deactivate);
+    });
+
+
+  </script>
+</body>
+
+</html>
