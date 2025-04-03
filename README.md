@@ -183,7 +183,6 @@ This example demonstrates controlling an LED on pin 2 of the ESP32 using a butto
 ### Video Demonstration:
 
 Below is a Video showing how the button controls the LED:
-
 ![LED Control Demo](https://i.imgur.com/KOoxMIB.gif)
 
 
