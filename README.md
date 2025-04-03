@@ -31,54 +31,6 @@ This is a library for an ESP32 web server based controller that anyone can use f
 - When activated, the controller enters **full-screen mode**, making it feel like a native app.  
 - Enhances **usability and immersive experience** for touchscreen devices.  
 
-
-## 📂 Project File Structure  
-
-Your Arduino project should be structured as follows:  /YourProjectName │── /data │ ├── controller.html │ ├── settings.html │── YourProjectName.ino │── OtherRequiredFiles.ino
-
-Ensure that the `data` folder contains `controller.html` and `settings.html` before uploading files to SPIFFS.
-- **controller.html**: The main interface for controlling the ESP32 via the web server. It contains buttons, sliders, and joysticks.
-- **settings.html**: The settings interface where users can customize the button names, types, slider ranges, joystick ranges, and other parameters.
-### 📸 Screenshot  
-Here is a visual representation of the project structure:  
-![file structure](https://i.imgur.com/AL3KFws.gif)
-
-
-## 📂 SPIFFS Data Upload Setup(For storing the html file in esp32)
-
-To upload website files stored in the **data** folder to ESP32’s SPIFFS, follow these steps:
-
-### 1️⃣ Download the ESP32FS Tool  
-📥 **[Download ESP32FS](https://drive.google.com/drive/folders/11EEOcLqq2jrCHOm5m8uCgVdsFf61-r1m?usp=sharing)**
-
-### 2️⃣ Install the Tool in Arduino  
-- **Check if the `tools` folder exists**:  
-  - Navigate to: `Documents/Arduino/`
-  - If there is no `tools` folder, **create one**.
-- **Paste the downloaded `ESP32FS` folder** inside `tools`:  
-  ```
-  Documents/Arduino/tools/ESP32FS/tool/esp32fs.jar
-  ```
-- The file structure should be like this-
-  ![file structure](https://i.imgur.com/fV7ENEP.png)
-
-### 3️⃣ Restart Arduino IDE  
-- Close and reopen Arduino IDE.  
-- Now, you should see **"ESP32 Sketch Data Upload"** under the **Tools** menu.
-
-### 4️⃣ Upload SPIFFS Data  
-- Open your project in **Arduino IDE**.
-- Click **"ESP32 Sketch Data Upload"** in the Tools menu.
-- Wait for the upload to complete.
-### You will see the uploader tool like this :-
- ![Tools](https://i.imgur.com/f3jr4NZ.png)
-### The debug message should be like this :-
-![message](https://i.imgur.com/4FxtePx.png)
-
-✅ Now, your website files in the **data** folder are stored in ESP32’s SPIFFS! 🚀
-
-
-
 ## ⚙️ Settings Management  
 
 ### 🔹 Local Storage  
@@ -102,6 +54,17 @@ To upload website files stored in the **data** folder to ESP32’s SPIFFS, follo
 | ![Slider settings](https://i.imgur.com/n12yPsc.jpeg) | ![Button Settings](https://i.imgur.com/S7hRldQ.jpeg) | ![Theme Settings](https://i.imgur.com/nFLCo8y.jpeg) |
 
 
+
+## 📂 Project File Structure  
+
+Your Arduino project should be structured as follows:  /YourProjectName │── /data │ ├── controller.html │ ├── settings.html │── YourProjectName.ino │── OtherRequiredFiles.ino
+
+Ensure that the `data` folder contains `controller.html` and `settings.html` before uploading files to SPIFFS.
+- **controller.html**: The main interface for controlling the ESP32 via the web server. It contains buttons, sliders, and joysticks.
+- **settings.html**: The settings interface where users can customize the button names, types, slider ranges, joystick ranges, and other parameters.
+### 📸 Screenshot  
+Here is a visual representation of the project structure:  
+![file structure](https://i.imgur.com/AL3KFws.gif)
 
 
 ## Dependencies
@@ -143,6 +106,43 @@ To use the main library in your project, follow these steps:
 
 
 Once you have completed these steps, you are ready to start using the library in your ESP32 project!
+
+
+## 📂 SPIFFS Data Upload Setup(For storing the html file in esp32)
+
+To upload website files stored in the **data** folder to ESP32’s SPIFFS, follow these steps:
+
+### 1️⃣ Download the ESP32FS Tool  
+📥 **[Download ESP32FS](https://drive.google.com/drive/folders/11EEOcLqq2jrCHOm5m8uCgVdsFf61-r1m?usp=sharing)**
+
+### 2️⃣ Install the Tool in Arduino  
+- **Check if the `tools` folder exists**:  
+  - Navigate to: `Documents/Arduino/`
+  - If there is no `tools` folder, **create one**.
+- **Paste the downloaded `ESP32FS` folder** inside `tools`:  
+  ```
+  Documents/Arduino/tools/ESP32FS/tool/esp32fs.jar
+  ```
+- The file structure should be like this-
+  ![file structure](https://i.imgur.com/fV7ENEP.png)
+
+### 3️⃣ Restart Arduino IDE  
+- Close and reopen Arduino IDE.  
+- Now, you should see **"ESP32 Sketch Data Upload"** under the **Tools** menu.
+
+### 4️⃣ Upload SPIFFS Data  
+- Open your project in **Arduino IDE**.
+- Click **"ESP32 Sketch Data Upload"** in the Tools menu.
+- Wait for the upload to complete.
+### You will see the uploader tool like this :-
+ ![Tools](https://i.imgur.com/f3jr4NZ.png)
+### The debug message should be like this :-
+![message](https://i.imgur.com/4FxtePx.png)
+
+✅ Now, your website files in the **data** folder are stored in ESP32’s SPIFFS! 🚀
+
+
+
 
 ## 📦 EEPROM Usage Restriction
 
