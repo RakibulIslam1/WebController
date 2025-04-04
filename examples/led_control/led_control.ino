@@ -16,8 +16,8 @@
 
 #define LED_PIN 2
 
-const char* ssid = "BDOSN4";       // Your WiFi SSID
-const char* password = "Bdosn2023@"; // Your WiFi Password
+const char* ssid = "YOUR SSID";       // Your WiFi SSID
+const char* password = "YOUR PASSWORD"; // Your WiFi Password
 
 // Create the WebController object with WiFi credentials
 WebController webController(ssid, password);
