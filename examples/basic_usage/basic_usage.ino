@@ -15,8 +15,8 @@
 #include "web_controller.h"
 
 // WiFi Credentials
-const char* ssid = "BDOSN4";
-const char* password = "Bdosn2023@";
+const char* ssid = "YOURSSID";
+const char* password = "YOUR PASSWORD";
 
 // Create the WebController object with WiFi credentials
 WebController webController(ssid, password);
